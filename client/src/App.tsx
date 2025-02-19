@@ -16,15 +16,11 @@ function Router() {
 }
 
 function App() {
-  return (
-    <div>
-      <QueryClientProvider client={queryClient}>
-        <Router />
-        <Toaster />
-      </QueryClientProvider>
-      <TestCalendar />
-    </div>
-  );
+  return (    <QueryClientProvider client={queryClient}>
+      <Router />
+      <Toaster />
+    </QueryClientProvider>
+     <TestCalendar />  );
 }
 
 export default App;
