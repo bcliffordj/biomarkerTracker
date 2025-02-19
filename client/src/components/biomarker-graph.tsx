@@ -17,11 +17,12 @@ interface BiomarkerGraphProps {
 
 export default function BiomarkerGraph({ entries, selectedBiomarkers }: BiomarkerGraphProps) {
   const data = entries.map(entry => {
+    console.log("Processing entry date:", entry.date);
     const parsedDate = parseISO(entry.date);
-    const localNoonDate = setHours(setMinutes(setSeconds(setMilliseconds(parsedDate, 0), 0), 0), 12);
+    console.log("Parsed date:", parsedDate);
     return {
       ...entry,
-      date: format(localNoonDate, "MMM d"),
+      date: format(parsedDate, "MMM d"),
     };
   });
 

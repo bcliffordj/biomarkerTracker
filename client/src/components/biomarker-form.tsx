@@ -1,4 +1,4 @@
-import { format, startOfDay } from "date-fns";
+import { format, endOfDay } from "date-fns";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -93,8 +92,17 @@ export default function BiomarkerForm() {
                   <Calendar
                     mode="single"
                     selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) => startOfDay(date) > startOfDay(new Date())}
+                    onSelect={(date) => {
+                      console.log("1. Selected date:", date);
+                      console.log("2. Current date:", new Date());
+                      console.log("3. End of day:", endOfDay(new Date()));
+                      field.onChange(date);
+                    }}
+                    disabled={(date) => {
+                      const isDisabled = date > endOfDay(new Date());
+                      console.log("4. Checking date:", date, "Is disabled:", isDisabled);
+                      return isDisabled;
+                    }}
                   />
                 </PopoverContent>
               </Popover>

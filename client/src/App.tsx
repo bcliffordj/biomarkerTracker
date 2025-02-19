@@ -4,6 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import NotFound from "@/pages/not-found";
 import Dashboard from "@/pages/dashboard";
+import TestCalendar from './path/to/TestCalendar';
 
 function Router() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Router />
       <Toaster />
     </QueryClientProvider>
+     <TestCalendar />
   );
 }
 
