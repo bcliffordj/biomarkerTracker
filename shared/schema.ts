@@ -25,9 +25,15 @@ export const insertBiomarkerEntrySchema = createInsertSchema(biomarkerEntries).o
   id: true,
 }).extend({
   date: z.coerce.date().refine((date) => {
+    // Create today at midnight in local timezone
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    return date <= today;
+
+    // Create input date at midnight in local timezone
+    const inputDate = new Date(date);
+    inputDate.setHours(0, 0, 0, 0);
+
+    return inputDate <= today;
   }, "Cannot select future dates"),
 });
 
