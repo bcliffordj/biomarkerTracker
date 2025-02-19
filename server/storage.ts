@@ -38,7 +38,7 @@ export class MemStorage implements IStorage {
     const biomarkerEntry: BiomarkerEntry = { 
       ...entry,
       id,
-      date: entry.date.toISOString().split('T')[0]
+      date: new Date(entry.date.getFullYear(), entry.date.getMonth(), entry.date.getDate()).toISOString()
     };
     this.entries.set(id, biomarkerEntry);
     return biomarkerEntry;

@@ -1,5 +1,5 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import { format } from "date-fns";
+import { parseISO, format, setHours, setMinutes, setSeconds, setMilliseconds } from 'date-fns';
 import type { BiomarkerEntry, BiomarkerName } from "@shared/schema";
 import { biomarkerLabels } from "@shared/schema";
 
@@ -16,10 +16,16 @@ interface BiomarkerGraphProps {
 }
 
 export default function BiomarkerGraph({ entries, selectedBiomarkers }: BiomarkerGraphProps) {
-  const data = entries.map(entry => ({
-    ...entry,
-    date: format(new Date(entry.date), "MMM d"),
-  }));
+  const data = entries.map(entry => {
+    const parsedDate = parseISO(entry.date);
+    const localNoonDate = setHours(setMinutes(setSeconds(setMilliseconds(parsedDate, 0), 0), 0), 12);
+    return {
+      ...entry,
+      date: format(localNoonDate, "MMM d"),
+    };
+  });
+
+  console.log("Processed data:", data);
 
   return (
     <ResponsiveContainer width="100%" height={400}>

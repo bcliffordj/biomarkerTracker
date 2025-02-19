@@ -1,3 +1,4 @@
+import { format, startOfDay } from "date-fns";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
@@ -15,7 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function BiomarkerForm() {
   const { toast } = useToast();
-  
+
   const form = useForm<InsertBiomarkerEntry>({
     resolver: zodResolver(insertBiomarkerEntrySchema),
     defaultValues: {
@@ -39,6 +40,7 @@ export default function BiomarkerForm() {
 
   const mutation = useMutation({
     mutationFn: async (values: InsertBiomarkerEntry) => {
+      console.log('Sending date:', values.date);
       const res = await apiRequest("POST", "/api/biomarkers", values);
       return res.json();
     },
@@ -92,7 +94,7 @@ export default function BiomarkerForm() {
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
-                    disabled={(date) => date > new Date()}
+                    disabled={(date) => startOfDay(date) > startOfDay(new Date())}
                   />
                 </PopoverContent>
               </Popover>
