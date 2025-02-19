@@ -1,4 +1,4 @@
-import { format, endOfDay } from "date-fns";
+import { format } from "date-fns";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
@@ -6,10 +6,7 @@ import { insertBiomarkerEntrySchema, type InsertBiomarkerEntry, biomarkerLabels,
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { CalendarIcon } from "lucide-react";
+import { BasicDatePicker } from "@/components/ui/basic-date-picker";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
@@ -69,43 +66,14 @@ export default function BiomarkerForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Date</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-full pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      {field.value ? (
-                        format(field.value, "PPP")
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={(date) => {
-                      console.log("1. Selected date:", date);
-                      console.log("2. Current date:", new Date());
-                      console.log("3. End of day:", endOfDay(new Date()));
-                      field.onChange(date);
-                    }}
-                    disabled={(date) => {
-                      const isDisabled = date > endOfDay(new Date());
-                      console.log("4. Checking date:", date, "Is disabled:", isDisabled);
-                      return isDisabled;
-                    }}
-                  />
-                </PopoverContent>
-              </Popover>
+              <FormControl>
+                <BasicDatePicker
+                  selected={field.value}
+                  onSelect={(date) => field.onChange(date)}
+                  startYear={2020}
+                  endYear={2025}
+                />
+              </FormControl>
             </FormItem>
           )}
         />
